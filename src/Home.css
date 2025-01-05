@@ -1,0 +1,129 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif; /* Modern font */
+  background-color: #121212; /* Black theme background */
+  color: #e0e0e0; /* Light gray text */
+}
+
+.homepage-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+  text-align: center;
+}
+
+.navbar {
+  width: 100%;
+  padding: 10px 20px;
+  background: rgba(0, 0, 0, 0.8); /* Semi-transparent black */
+  color: #e0e0e0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+  height: 70px;
+  box-sizing: border-box;
+}
+
+.navbar-logo-img {
+  max-height: 50px;
+  width: auto;
+  margin-right: 10px;
+}
+
+.navbar-links a {
+  color: #e0e0e0;
+  margin: 0 10px;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: color 0.3s;
+}
+
+.navbar-links a:hover {
+  color: #ff4081; /* Neon pink hover effect */
+  text-shadow: 0 0 8px #ff4081;
+}
+
+.homepage-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
+
+.homepage-content {
+  text-align: left;
+  max-width: 50%;
+}
+
+h1 {
+  font-size: 3rem;
+  color: #ffffff;
+  margin-bottom: 20px;
+  text-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+}
+
+p {
+  font-size: 1.2rem;
+  color: #b0b0b0;
+  margin-bottom: 40px;
+}
+
+.start-button {
+  padding: 15px 30px;
+  font-size: 1rem;
+  color: #ffffff;
+  background: linear-gradient(145deg, #2e2e2e, grey); /* Modern 3D grey gradient */
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6), inset 0 -4px 6px rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.start-button:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8), inset 0 -6px 8px rgba(255, 255, 255, 0.1);
+}
+
+.homepage-image img {
+  max-width: 400px;
+  max-height: 300px;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.homepage-image img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.9);
+}
+
+.footer {
+  width: 100%;
+  padding: 10px 20px;
+  background: rgba(0, 0, 0, 0.8); /* Semi-transparent black */
+  color: #e0e0e0;
+  text-align: center;
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.6);
+}
+
+.footer p {
+  margin: 0;
+}
+
+/* Add subtle animations for dynamic appeal */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.homepage-container {
+  animation: fadeIn 1s ease-in-out;
+}

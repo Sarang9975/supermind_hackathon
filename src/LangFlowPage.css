@@ -1,4 +1,4 @@
-/* General Styles */
+General Styles
 body {
     margin: 0;
     padding: 0;
@@ -116,8 +116,10 @@ body {
     transition: color 0.3s;
 }
 
-.sidebar li:hover {
-    color: #ff7f50; /* Coral color on hover */
+.sidebar-heading{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
 }
 
 /* LangFlow Container */
@@ -212,7 +214,7 @@ input[type="text"]::placeholder {
     color: #b0b0b0;
 }
 
-button {
+.sendBtn {
     padding: 10px 20px;
     font-size: 0.9rem; /* Reduced font size */
     color: #ffffff;
@@ -222,7 +224,7 @@ button {
     transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
 }
 
-button:hover {
+.sendBtn:hover {
     background: #ff6347; /* Slightly darker coral on hover */
     transform: translateX(-3px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);

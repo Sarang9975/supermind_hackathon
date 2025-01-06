@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { marked } from "marked";
 import "./LangFlowPage.css";
-
+import logo from './sonetlogo.jpg';
 const PROXY_URL = "http://localhost:3001/proxy";
 
 function LangFlowPage() {
@@ -61,7 +61,10 @@ function LangFlowPage() {
   return (
     <div className="main-container">
       <div className="sidebar">
-        <h2>Sonet 1.0</h2>
+        <div className="sidebar-heading">
+          <h2>Sonet 1.0</h2>
+          <img src={logo} width={"50px"} height={"50px"}/>
+        </div>
         <div className="about-box">
           <h3 className="about-box-heading">About Sonet 1.0</h3>
           <p>
@@ -116,7 +119,7 @@ function LangFlowPage() {
               onKeyDown={handleKeyPress}
               placeholder="Type your message..."
             />
-            <button onClick={handleSubmit}>Send</button>
+            <button className="sendBtn" onClick={handleSubmit}>Send</button>
           </div>
         </div>
       </div>

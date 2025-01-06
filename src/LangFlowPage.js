@@ -61,7 +61,22 @@ function LangFlowPage() {
   return (
     <div className="main-container">
       <div className="sidebar">
-        <h2>Navigation</h2>
+        <h2>Sonet 1.0</h2>
+        <div className="about-box">
+          <h3 className="about-box-heading">About Sonet 1.0</h3>
+          <p>
+            Sonet 1.0 is an advanced AI-based tool designed to analyze and provide insights into social media content. Using state-of-the-art natural language processing (NLP) algorithms, Sonet can understand and respond to user queries related to social media trends, statistics, and other related topics.
+          </p>
+        </div>
+        <div className="tips-box">
+          <h3 className="tips-box-heading">Tips for Using the Tool</h3>
+          <ul>
+            <li>😊 Type your queries in the input box below.</li>
+            <li>👆 Press Enter or click "Send" to submit.</li>
+            <li>🤖 Use simple and clear language for better results.</li>
+            <li>🗺️ Explore the Navigation menu for additional resources.</li>
+          </ul>
+        </div>
         <ul>
           <li>Tips</li>
           <li>About</li>
@@ -70,18 +85,20 @@ function LangFlowPage() {
       </div>
 
       <div className="langflow-container">
-        <h1>Social Media Analytics using LANGFLOW 𐤕 DATASTRAX</h1>
+        <h1>Social Media Analyser with LANGFLOW</h1>
         <div className="chat-window">
           {chatHistory.map((message, index) => (
             <div
               key={index}
               className={`chat-message ${message.type === "user" ? "user" : "bot"}`}
             >
-              <div className="message-bubble">{message.type === "bot" ? (
-                <div dangerouslySetInnerHTML={{ __html: marked(message.text) }} />
-              ) : (
-                message.text
-              )}</div>
+              <div className="message-bubble">
+                {message.type === "bot" ? (
+                  <div dangerouslySetInnerHTML={{ __html: marked(message.text) }} />
+                ) : (
+                  message.text
+                )}
+              </div>
             </div>
           ))}
           {loading && (
@@ -108,4 +125,3 @@ function LangFlowPage() {
 }
 
 export default LangFlowPage;
-

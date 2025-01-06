@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Homepage from "./Home";
 import LangFlowPage from "./LangFlowPage";
+import About from "./About";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         
         {/* Route for the LangFlow chat page */}
         <Route path="/chat" element={<LangFlowPage />} />
+        <Route path="/about" element={<About />} />
       </Routes>
     </Router>
   );

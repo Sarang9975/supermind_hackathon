@@ -1,23 +1,24 @@
 General Styles
+/* Adding Padding Below the Navbar */
 body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Roboto', sans-serif;
-    background-color: #121212; /* Dark theme background */
-    color: #e0e0e0; /* Light gray text */
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: #121212; /* Dark theme background */
+  color: #e0e0e0; /* Light gray text */
+  padding-top: 80px; /* Ensures content starts below navbar */
 }
 
-/* Main Container */
 .main-container {
-    display: flex;
-    height: 100vh;
-    overflow: hidden;
+  display: flex;
+  height: calc(100vh - 100px); /* Adjust height based on navbar height */
+  overflow: hidden;
+  margin-top: 120px; /* Introduces a gap below the navbar */
 }
 
 /* Sidebar Styles */
 .sidebar {
-    width: 18%; /* Slightly smaller sidebar */
-    background: rgba(0, 0, 0, 0.9);
+    width: 20%; /* Slightly smaller sidebar */
     padding: 15px;
     box-shadow: 2px 0 8px rgba(0, 0, 0, 0.6);
     height: 100vh; /* Full height of the screen */
@@ -69,7 +70,7 @@ body {
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.05);
     padding: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 30spx;
     color: #ffffff;
     font-size: 0.8rem; /* Reduced font size */
     line-height: 1.4; /* Improved readability */
@@ -120,7 +121,7 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    margin: 5px;
+    margin-bottom: 20px;
 }
 
 /* LangFlow Container */
@@ -247,4 +248,67 @@ input[type="text"]::placeholder {
 
 .sidebar::-webkit-scrollbar-track {
     background: transparent; /* Invisible track */
+}
+/* Scrollbar Customization for Chat Window */
+.chat-window::-webkit-scrollbar {
+  width: 6px; /* Narrow scrollbar */
+}
+
+.chat-window::-webkit-scrollbar-thumb {
+  background: #444; /* Dark gray */
+  border-radius: 3px; /* Rounded edges */
+  transition: background 0.3s ease;
+}
+
+.chat-window::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Slightly lighter gray on hover */
+}
+
+.chat-window::-webkit-scrollbar-track {
+  background: transparent; /* Invisible track */
+}
+
+/* Navbar Styles */
+.chat-navbar {
+  position: fixed;
+  margin-top: 20px;
+  top: 0; /* Stick to the very top of the page */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  padding: 15px 30px;
+  background: rgba(0, 0, 0, 0.3); /* Transparent black background */
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Light white border */
+  color: #e0e0e0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 20px; /* Rounded edges */
+  z-index: 100;
+  backdrop-filter: blur(10px); /* Blurred background effect */
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.05), 0 2px 6px rgba(0, 0, 0, 0.7); /* White shadow to pop out */
+  margin-bottom: 20px; /* Optional: Creates gap below the navbar itself */
+}
+
+
+/* Logo */
+.chat-navbar-logo-img {
+  max-height: 50px;
+  width: auto;
+  margin-right: 10px;
+  padding-top: 2px;
+}
+
+/* Navbar Links */
+.chat-navbar-links a {
+  color: #e0e0e0;
+  margin: 0 15px;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: color 0.3s, text-shadow 0.3s;
+}
+
+.chat-navbar-links a:hover {
+  color: #ff4081; /* Neon pink hover effect */
+  text-shadow: 0 0 8px #ff4081;
 }

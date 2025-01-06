@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import { marked } from "marked";
 import "./LangFlowPage.css";
-import logo from './sonetlogo.png';
+import sonetlogo from './sonetlogo.png';
+import logo from './logo.png';
 const PROXY_URL = "http://localhost:3001/proxy";
 
 function LangFlowPage() {
@@ -58,12 +59,23 @@ function LangFlowPage() {
     }
   };
 
-  return (
+  return (<>
+    <header className="chat-navbar">
+    <div className="chat-navbar-left">
+      <img src={logo} alt="Logo" className="chat-navbar-logo-img" />
+    </div>
+    <nav className="chat-navbar-links">
+      <a href="#">Home</a>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+    </nav>
+  </header>
     <div className="main-container">
+      
       <div className="sidebar">
         <div className="sidebar-heading">
           <h2>Sonet 1.0</h2>
-          <img src={logo} width={"50px"} height={"50px"}/>
+          <img src={sonetlogo} width={"50px"} height={"50px"}/>
         </div>
         <div className="about-box">
           <h3 className="about-box-heading">About Sonet 1.0</h3>
@@ -124,6 +136,7 @@ function LangFlowPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }
 

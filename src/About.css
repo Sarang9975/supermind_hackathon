@@ -1,0 +1,172 @@
+/* General Page Styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #090909; /* Dark background */
+    color: #e0e0e0; /* Light gray text */
+    padding-top: 80px; /* Space for fixed navbar */
+}
+
+.about-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Navbar Styles */
+.about-navbar {
+    position: fixed;
+    margin-top: 20px;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    padding: 15px 30px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 20px;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.05), 0 2px 6px rgba(0, 0, 0, 0.7);
+}
+
+.about-navbar-links a {
+    color: #e0e0e0;
+    text-decoration: none;
+    margin: 0 15px;
+    transition: color 0.3s ease;
+}
+
+.about-navbar-links a:hover {
+    color: white;
+}
+
+/* Tool Description Section */
+.tool-description {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.tool-description h1 {
+    font-size: 2.5rem;
+    color: #ffffff;
+    margin-bottom: 15px;
+    text-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+}
+
+.tool-description p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.tool-image {
+    max-width: 50%;
+    margin-top: 20px;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+}
+
+/* Features Section */
+.features-section h2 {
+    font-size: 2rem;
+    color: #ffffff;
+    margin-bottom: 30px;
+    text-align: center;
+    text-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    padding: 0 20px;
+}
+
+.feature-box {
+    background: linear-gradient(145deg, #1e1e1e, #292929);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    color: #e0e0e0;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.8), 0 4px 10px rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeIn 1s ease-out;
+}
+
+.feature-box:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.9), 0 6px 20px rgba(255, 255, 255, 0.2);
+    background: linear-gradient(145deg, #292929, #1e1e1e);
+}
+
+/* Different Backgrounds for Each Box */
+.feature-box1 {
+    background: linear-gradient(145deg, #2e2e2e, #3e3e3e);
+}
+
+.feature-box2 {
+    background: linear-gradient(145deg, #3a2e3e, #4a3e4e);
+}
+
+.feature-box3 {
+    background: linear-gradient(145deg, #2e3e3e, #3e4e4e);
+}
+
+.feature-box4 {
+    background: linear-gradient(145deg, #3e2e2e, #4e3e3e);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Team Section */
+.team-section h2 {
+    font-size: 1.8rem;
+    color: #ffffff;
+    margin-bottom: 20px;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    justify-items: center;
+    text-align: center;
+}
+
+.team-member img {
+    max-width: 100px;
+    height: auto;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+    margin-bottom: 10px;
+    transition: transform 0.3s ease;
+}
+
+.team-member img:hover {
+    transform: scale(1.1);
+}
+
+.team-member p {
+    font-size: 1rem;
+    color: #e0e0e0;
+}

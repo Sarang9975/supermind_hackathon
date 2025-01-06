@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { marked } from "marked";
 import "./LangFlowPage.css";
-import logo from './sonetlogo.jpg';
+import logo from './sonetlogo.png';
 const PROXY_URL = "http://localhost:3001/proxy";
 
 function LangFlowPage() {

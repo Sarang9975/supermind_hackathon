@@ -32,7 +32,7 @@ function Homepage() {
             Get started by exploring the analytics tool designed to provide dynamic insights.
           </p>
           <button onClick={handleNavigateToChat} className="start-button">
-            Start Chat Analysis
+            Start Analysis
           </button>
         </div>
         <div className="homepage-image">

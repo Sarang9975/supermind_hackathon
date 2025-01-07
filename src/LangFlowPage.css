@@ -11,6 +11,7 @@
     /* Light gray text */
     padding-top: 80px;
     display: flex;
+    justify-content: space-evenly;
 }
 
 
@@ -45,6 +46,7 @@
 
 /* Logo */
 .chat-navbar-logo-img {
+    margin-top: 7px;
     max-height: 50px;
     width: auto;
     margin-right: 10px;
@@ -75,32 +77,31 @@
 /* About Sonnet Section */
 .about-sonnet {
     text-align: center;
-    margin-top: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: row;
-    /* Arrange items in a row */
-    align-items: center;
-    padding: 20px;
+    justify-content: center;
 }
 
 .sonnet-heading{
     position:relative;
-    top: -5px;
+    top: -14px;
 }
 
 .sonet-details {
     margin: 0;
+    padding: 0;
 }
 
 .logo-container {
     display: flex;
     width: 300px;
-    gap: 20px;
+    gap: 7px;
+    height: 40px;
     align-items:start;
     align-content: start;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 .sonnet-logo {
     width: 50px;
@@ -114,16 +115,16 @@
 }
 
 .about-sonnet h1 {
-    font-size: 1.5em;
+    font-size: 1.8em;
     color: #ffffff;
     margin-bottom: 10px;
 }
 
 .about-sonnet p {
-    font-size: 1em;
+    font-size: 1.5em;
     color: #b3b3b3;
     margin-top: 10px;
-    line-height: 1.5;
+    margin-bottom: 10px;
 }
 
 
@@ -152,24 +153,51 @@
 .chat-container {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    height: 600px;
+    justify-content: center;
+    height: 630px;
     width: 80%;
-    /* Set the width to 80% of the parent container (adjust as needed) */
-    max-width: 1000px;
-    /* Set a maximum width for the chat container */
-    margin: 0 auto;
-    /* Center the container horizontally */
-    padding: 0 20px;
+    max-width: 1200px;
 }
 
 .chat-box {
     flex-grow: 1;
+    margin-top:40px;
     background: #1e1e1e;
     border-radius: 10px;
     padding: 20px;
     overflow-y: auto;
 }
+
+
+.copy-button {
+    width: auto;
+    background-color: #2e2e2e; /* Dark gray to match bot messages */
+    color: #6a6a6a; /* Subtle color for the icon */
+    border: none;
+    border-radius: 50%; /* Circular button */
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out; /* Smooth hover animation */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.copy-button:hover {
+    background-color: #4a4a4a; /* Slightly lighter gray on hover */
+    color: #ffffff; /* White icon on hover */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Enhanced shadow */
+    transform: scale(1.1); /* Subtle scale effect */
+}
+
+.copy-button:active {
+    background-color: #6a6a6a; /* Highlight color when clicked */
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2); /* Reduced shadow */
+    transform: scale(0.95); /* Shrink effect on click */
+}
+
+.copy-button svg {
+    font-size: 1.2em; /* Adjust icon size */
+}
+
 
 .chat-message {
     display: flex;
@@ -183,7 +211,6 @@
 
 .chat-message.bot {
     justify-content: flex-start;
-    /* Align bot messages to the left */
 }
 
 .message-bubble {
@@ -221,24 +248,41 @@
 /* Chat Input Section */
 .input-container {
     display: flex;
+    justify-content: center;
     align-items: center;
-    margin-top: 15px;
-    margin-bottom: 50px;
+    margin-top: 10px;
+    margin-bottom: 20px;
 }
 
 .input-box {
-    flex-grow: 1;
+    flex-grow: 0.55;
     padding: 15px;
     border-radius: 10px;
     border: none;
     background: #2e2e2e;
     color: #ffffff;
     font-size: 1em;
-    margin-right: 10px;
+    margin-right: -10px;
 }
 
+.attachment-button {
+    position: relative;
+    margin-top: 5px;
+    right:2rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2em;
+    color: #6a6a6a;
+  }
+ 
+  .attachment-button:hover {
+    color: lightgray;
+  }
+
+
 .send-button {
-    padding: 15px 20px;
+    padding: 14px 20px;
     border-radius: 10px;
     border: none;
     background: #C0C0C0;
@@ -293,15 +337,14 @@
 
 /* Tips Box Heading */
 .tips-box-heading {
-    font-size: 1rem;
-    width: 200px;
+    font-size: 0.8rem;
+    width: 180px;
     color: #ffffff;
     background-color: #3a3a3a;
     margin-bottom: 20px;
     /* Space between heading and boxes */
     padding: 5px;
     font-weight: 700;
-    text-transform: uppercase;
     letter-spacing: 1px;
     border-radius: 25px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
@@ -324,19 +367,18 @@
 /* Tips Box */
 .tip-box {
     width: 180px;
-    height: 150px;
+    height: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
-    border: 2px dashed rgba(255, 255, 255, 0.6);
+    border: 2px solid rgba(255, 255, 255, 0.6);
     border-radius: 12px;
     background: rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     color: white;
     font-size: 14px;
-    font-weight: bold;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.05);
     transition: transform 0.2s ease, background-color 0.2s ease;
 }
@@ -346,3 +388,127 @@
     background: rgba(255, 255, 255, 0.5);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2), 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+
+.animated-fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+ 
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+ 
+  /* Loader animation inside the button */
+  .loader {
+    border: 3px solid #f0f0f0;
+    border-top: 3px solid #b3b3b3;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    animation: spin 1s linear infinite;
+    margin: auto;
+  }
+ 
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .send-button:disabled {
+    background: #e0e0e0;
+    color: #999;
+    border: 1px solid #c7c7c7;
+    cursor: not-allowed;
+  }
+ 
+
+
+  /*prompts Box Section */
+
+.prompts-section {
+    text-align: center;
+    margin-top: 50px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Tips Box Heading */
+.prompts-box-heading {
+    font-size: 1rem;
+    width: 230px;
+    color: #ffffff;
+    background-color: #3a3a3a;
+    margin-bottom: 20px;
+    /* Space between heading and boxes */
+    padding: 5px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    border-radius: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Container for Tip Boxes */
+.prompts-boxes-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    gap: 30px;
+    flex-wrap: wrap;
+    padding: 0 20px;
+
+}
+
+/* Tips Box */
+.prompts-box {
+    width: 150px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: white;
+    font-size: 14px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.prompts-box:hover {
+    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2), 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.animated-fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+ 
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }

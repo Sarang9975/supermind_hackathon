@@ -30,10 +30,12 @@ function Homepage() {
           <img src={logo} alt="Logo" className="navbar-logo-img" />
         </div>
         <nav className="navbar-links">
-          <a href="#" onClick={() => scrollToSection("home-section")}>Home</a>
-          <a href="#" onClick={() => scrollToSection("about-section")}>About</a>
-          <a href="#" onClick={handleNavigateToChat}>Analyse</a>
-        </nav>
+  <a href="#" onClick={() => scrollToSection("home-section")}>Home</a>
+  <a href="#" onClick={() => scrollToSection("about-section")}>About</a>
+  <a href="#" onClick={handleNavigateToChat}>Analyse</a>
+  <a href="#" onClick={() => scrollToSection("contact-section")}>Contact Us</a>
+</nav>
+
       </header>
 
       <main className="homepage-main">
@@ -112,7 +114,7 @@ function Homepage() {
             </div>
           </div>
         </section>
-        <section className="contact-section">
+        <section className="contact-section" id="contact-section">
   <div className="contact-left">
     <h2>Contact Us</h2>
     <p>If you appreciate our work or have a query, hit us up.<br/> We’d love to hear from you!</p>

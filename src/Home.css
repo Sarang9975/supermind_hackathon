@@ -331,6 +331,7 @@ p {
   border-radius: 50%;
   box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
   margin-bottom: 10px;
+  border: 1px solid white;
   transition: transform 0.3s ease;
 }
 

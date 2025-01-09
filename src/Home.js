@@ -183,7 +183,7 @@ function Homepage() {
               <div className="team-image-container">
                 <img src={personImage4} alt="Team Member 4" />
                 <a
-                  href="https://www.linkedin.com/in/mathew-binoy-b5ab27255"
+                  href="https://www.linkedin.com/in/rishikesh-koli-828248257"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="linkedin-icon"
@@ -191,7 +191,7 @@ function Homepage() {
                   <img src={linkedin} alt="linkedin" />
                 </a>
               </div>
-              <p>Mathew Binoy<br />- AI/ML Engineer</p>
+              <p>Rishikesh Koli<br/>- Full Stack Developer</p>
             </div>
           </div>
         </section>

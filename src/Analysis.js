@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { jsPDF } from "jspdf";
-import { Chart } from "chart.js/auto";
+import Plotly from "plotly.js-dist-min";
+import downloadIcon from "./downloadIcon.png";
 
 const Analysis = () => {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/api/data")
+    fetch("https://python-server-h4xw.onrender.com/api/data")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch data");
@@ -26,155 +27,237 @@ const Analysis = () => {
       });
   }, []);
 
-  const generateChartImage = async (chartData, chartType, title) => {
-    return new Promise((resolve) => {
-      const chartCanvas = document.createElement("canvas");
-      const chartInstance = new Chart(chartCanvas, {
-        type: chartType,
-        data: chartData,
-        options: {
-          responsive: false, // Disable responsiveness for consistent rendering
-          animation: {
-            onComplete: () => {
-              resolve(chartCanvas.toDataURL("image/png"));
-            },
-          },
-          plugins: {
-            title: {
-              display: true,
-              text: title,
-            },
-          },
-          scales: {
-            y: {
-              beginAtZero: true,
-            },
-          },
-        },
-      });
+  const generateChartImage = async (chartData, chartLayout) => {
+    return Plotly.toImage({
+      data: chartData,
+      layout: chartLayout,
+      format: "png",
+      width: 800,
+      height: 600,
     });
   };
 
+  const generateInsights = (data) => {
+    const totalPosts = data.length;
+    const totalViews = data.reduce((sum, item) => sum + item.views, 0);
+    const totalLikes = data.reduce((sum, item) => sum + item.likes, 0);
+    const totalShares = data.reduce((sum, item) => sum + item.shares, 0);
+
+    const mostPopularPostType = data.reduce((acc, item) => {
+      acc[item.post_type] = (acc[item.post_type] || 0) + item.views;
+      return acc;
+    }, {});
+
+    const topTheme = data.reduce((acc, item) => {
+      acc[item.theme] = (acc[item.theme] || 0) + item.likes;
+      return acc;
+    }, {});
+
+    const topPostType = Object.keys(mostPopularPostType).reduce((a, b) =>
+      mostPopularPostType[a] > mostPopularPostType[b] ? a : b
+    );
+
+    const topThemeCategory = Object.keys(topTheme).reduce((a, b) =>
+      topTheme[a] > topTheme[b] ? a : b
+    );
+
+    return {
+      totalPosts,
+      totalViews,
+      totalLikes,
+      totalShares,
+      topPostType,
+      topThemeCategory,
+    };
+  };
+
   const generatePDF = async () => {
-    const doc = new jsPDF();
+    const doc = new jsPDF("portrait", "mm", "a4");
 
-    // Add title
+    const addPageBorder = () => {
+      doc.setDrawColor(150);
+      doc.setLineWidth(0.5);
+      doc.rect(5, 5, 200, 287, "S");
+    };
+
+    addPageBorder();
+
+    const date = new Date().toLocaleString();
+    const pageWidth = doc.internal.pageSize.getWidth();
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(22);
+    doc.text("Social Media Engagement Report", pageWidth / 2, 20, { align: "center" });
+
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "normal");
+    doc.text(`Generated on: ${date}`, pageWidth / 2, 28, { align: "center" });
+
+    doc.setDrawColor(200);
+    doc.line(10, 35, pageWidth - 10, 35);
+
     doc.setFontSize(16);
-    doc.text("Social Media Engagement Report", 10, 10);
+    doc.setFont("helvetica", "bold");
+    doc.text("Key Insights", 10, 45);
 
-    // Generate Chart 1: Post Types and Views
-    const postTypes = Array.from(new Set(data.map((item) => item.post_type)));
-    const viewsByType = postTypes.map((type) =>
-      data
-        .filter((item) => item.post_type === type)
-        .reduce((sum, item) => sum + item.views, 0)
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "normal");
+    const insights = generateInsights(data);
+    doc.text(
+      `Total Posts Analyzed: ${insights.totalPosts}\nTotal Views: ${insights.totalViews}\nTotal Likes: ${insights.totalLikes}\nTotal Shares: ${insights.totalShares}\nMost Popular Post Type: ${insights.topPostType}\nTop Theme Category: ${insights.topThemeCategory}`,
+      15,
+      55
     );
 
-    const chartData1 = {
-      labels: postTypes,
-      datasets: [
-        {
-          label: "Views",
-          data: viewsByType,
-          backgroundColor: "rgba(54, 162, 235, 0.2)",
-          borderColor: "rgba(54, 162, 235, 1)",
-          borderWidth: 1,
-        },
-      ],
+    doc.setFontSize(16);
+    doc.setFont("helvetica", "bold");
+    doc.text("Recommendations", 10, 100);
+
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "normal");
+    doc.text(
+      "1. Focus more on creating content around the top theme category to drive engagement.\n" +
+        "2. Utilize the most popular post type format to maximize reach.\n" +
+        "3. Analyze less-engaging themes to improve future posts.",
+      15,
+      110
+    );
+
+    const charts = [];
+
+    // Chart 1: Views by Post Type
+    const chart1Data = [
+      {
+        x: Array.from(new Set(data.map((item) => item.post_type))),
+        y: Array.from(new Set(data.map((item) => item.post_type))).map((type) =>
+          data
+            .filter((item) => item.post_type === type)
+            .reduce((sum, item) => sum + item.views, 0)
+        ),
+        type: "bar",
+        marker: { color: "rgba(54, 162, 235, 0.7)" },
+      },
+    ];
+    const chart1Layout = {
+      title: "Views by Post Type",
+      xaxis: { title: "Post Type" },
+      yaxis: { title: "Views" },
     };
-    const chartImage1 = await generateChartImage(
-      chartData1,
-      "bar",
-      "Views by Post Type"
-    );
+    charts.push(generateChartImage(chart1Data, chart1Layout));
 
-    // Add Chart 1 to PDF
-    doc.addImage(chartImage1, "PNG", 10, 30, 180, 90);
+    // Chart 2: Post Type Distribution
+    const chart2Data = [
+      {
+        labels: Array.from(new Set(data.map((item) => item.post_type))),
+        values: Array.from(new Set(data.map((item) => item.post_type))).map((type) =>
+          data.filter((item) => item.post_type === type).length
+        ),
+        type: "pie",
+      },
+    ];
+    const chart2Layout = { title: "Post Type Distribution" };
+    charts.push(generateChartImage(chart2Data, chart2Layout));
 
-    // Generate Chart 2: Themes and Engagement
-    const themes = Array.from(new Set(data.map((item) => item.theme)));
-    const likesByTheme = themes.map((theme) =>
-      data
-        .filter((item) => item.theme === theme)
-        .reduce((sum, item) => sum + item.likes, 0)
-    );
+    // Chart 3: Likes Over Time
+    const dateMap = data.reduce((acc, item) => {
+      if (!item.date) return acc;
+      acc[item.date] = (acc[item.date] || 0) + item.likes;
+      return acc;
+    }, {});
+    const dates = Object.keys(dateMap).sort();
+    const likesOverTime = dates.map((date) => dateMap[date]);
 
-    const chartData2 = {
-      labels: themes,
-      datasets: [
-        {
-          label: "Likes",
-          data: likesByTheme,
-          backgroundColor: "rgba(255, 99, 132, 0.2)",
-          borderColor: "rgba(255, 99, 132, 1)",
-          borderWidth: 1,
-        },
-      ],
+    const chart3Data = [
+      {
+        x: dates,
+        y: likesOverTime,
+        type: "scatter",
+        mode: "lines+markers",
+        line: { color: "rgba(255, 99, 132, 0.7)" },
+      },
+    ];
+    const chart3Layout = {
+      title: "Likes Over Time",
+      xaxis: { title: "Date" },
+      yaxis: { title: "Likes" },
     };
-    const chartImage2 = await generateChartImage(
-      chartData2,
-      "pie",
-      "Likes by Theme"
-    );
+    charts.push(generateChartImage(chart3Data, chart3Layout));
 
-    // Add Chart 2 to PDF
-    doc.addImage(chartImage2, "PNG", 10, 140, 180, 90);
-
-    // Generate Chart 3: Engagement Overview
-    const engagements = data.map((item) => ({
-      label: item.post_id,
-      value: item.likes + item.shares + item.views,
-    }));
-    const chartData3 = {
-      labels: engagements.map((e) => e.label),
-      datasets: [
-        {
-          label: "Engagement",
-          data: engagements.map((e) => e.value),
-          backgroundColor: "rgba(75, 192, 192, 0.2)",
-          borderColor: "rgba(75, 192, 192, 1)",
-          borderWidth: 1,
-        },
-      ],
+    // Chart 4: Engagement Comparison
+    const engagementMetrics = ["Views", "Likes", "Shares"];
+    const engagementValues = [
+      data.reduce((sum, item) => sum + item.views, 0),
+      data.reduce((sum, item) => sum + item.likes, 0),
+      data.reduce((sum, item) => sum + item.shares, 0),
+    ];
+    const chart4Data = [
+      {
+        type: "scatterpolar",
+        r: engagementValues,
+        theta: engagementMetrics,
+        fill: "toself",
+        marker: { color: "rgba(75, 192, 192, 0.7)" },
+      },
+    ];
+    const chart4Layout = {
+      polar: { radialaxis: { visible: true } },
+      title: "Engagement Metrics Comparison",
     };
-    const chartImage3 = await generateChartImage(
-      chartData3,
-      "line",
-      "Engagement by Post"
-    );
+    charts.push(generateChartImage(chart4Data, chart4Layout));
 
-    // Add Chart 3 to PDF (new page)
-    doc.addPage();
-    doc.addImage(chartImage3, "PNG", 10, 30, 180, 90);
+    // Chart 5: Shares by Theme
+    const chart5Data = [
+      {
+        x: Array.from(new Set(data.map((item) => item.theme))),
+        y: Array.from(new Set(data.map((item) => item.theme))).map((theme) =>
+          data
+            .filter((item) => item.theme === theme)
+            .reduce((sum, item) => sum + item.shares, 0)
+        ),
+        type: "bar",
+        marker: { color: "rgba(153, 102, 255, 0.7)" },
+      },
+    ];
+    const chart5Layout = {
+      title: "Shares by Theme",
+      xaxis: { title: "Theme" },
+      yaxis: { title: "Shares" },
+    };
+    charts.push(generateChartImage(chart5Data, chart5Layout));
 
-    // Save the PDF
+    const chartImages = await Promise.all(charts);
+
+    let yOffset = 130;
+    chartImages.forEach((chart, index) => {
+      if (yOffset + 90 > 287) {
+        doc.addPage();
+        addPageBorder();
+        yOffset = 20;
+      }
+      doc.addImage(chart, "PNG", 10, yOffset, 180, 90);
+      yOffset += 100;
+    });
+
     doc.save("Social_Media_Engagement_Report.pdf");
   };
 
   return (
     <div>
-      {/* <h1>Data from Astra DB</h1>
-      {error && <p style={{ color: "red" }}>Error: {error}</p>}
-      <ul>
-        {data.map((item, index) => (
-          <li key={index}>{JSON.stringify(item)}</li>
-        ))}
-      </ul> */}
-
-      {/* Button to trigger PDF generation */}
-      <button
+      <img
+        src={downloadIcon}
+        className="iconsStyling"
         onClick={generatePDF}
         style={{
-          background: "none",
-          border: "none",
-          color: "white",
-          textDecoration: "underline",
+          fontSize: "1.7rem",
+          color: "#6a6a6a",
           cursor: "pointer",
-          fontSize: "16px",
+          position: "relative",
+          background: "transparent",
+          border: "none",
         }}
-      >
-        Download Report
-      </button>
+        onMouseOver={(e) => (e.currentTarget.style.color = "white")}
+        onMouseOut={(e) => (e.currentTarget.style.color = "#6a6a6a")}
+      />
     </div>
   );
 };

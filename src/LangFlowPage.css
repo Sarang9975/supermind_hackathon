@@ -63,9 +63,9 @@
 }
 
 .chat-navbar-links a:hover {
-    color: #ff4081;
+    
     /* Neon pink hover effect */
-    text-shadow: 0 0 8px #ff4081;
+    text-shadow: 0 0 8px grey;
 }
 
 /* About-Tip Section */

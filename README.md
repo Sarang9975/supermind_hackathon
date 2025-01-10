@@ -1,5 +1,3 @@
-SploreAI 
-
 SploreAI is an AI-powered social media analytics platform that provides actionable insights to help businesses optimize their social media performance. Built using Langflow, DataStax Astra DB, and GPT, it enables users to analyze engagement data through interactive chats, visual dashboards, and comprehensive PDF reports.
 
 🚀 Project Overview
@@ -15,24 +13,20 @@ DataStax Astra DB – For storing and querying social media engagement data
 OpenAI GPT – For generating insights and recommendations
 
 🧩 Key Features
-Interactive Chatbot
-Ask for best-performing posts, engagement strategies, sentiment analysis, and more.
-Visual Dashboard
-View data insights through diagrams and charts.
-PDF Report Generation
-Download comprehensive reports with charts and insights for easy sharing.
-File Uploads
-Enhance insights by uploading CSV files of competitor or historical data.
+SploreAI delivers a seamless user experience through:
 
-⚙️ Setup Instructions
-Follow the steps below to run SploreAI locally:
+✅ Interactive Chatbot: Ask questions about your best-performing posts, strategies, sentiment analysis, engagement predictions, and more.<br/>
+✅ Visual Dashboards: Get instant insights displayed as clear, interactive charts and graphs.<br/>
+✅ Comprehensive PDF Reports: Download detailed reports featuring key metrics and actionable insights.<br/>
+✅ File Uploads: Enhance your analysis by uploading CSV files of competitor data or historical performance.<br/>
 
 ⚙️ Setup Instructions
 Follow these steps to run SploreAI locally:
 
 1️⃣ Clone the Repository
-git clone https://github.com/Sarang9975/supermind_hackathon.git   
-cd langflow-client
+git clone https://github.com/Sarang9975/supermind_hackathon.git  
+cd supermind_hackathon  
+cd langflow_client
 
 2️⃣ Install Dependencies
 npm install  

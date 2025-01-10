@@ -16,6 +16,7 @@ import {
 import { FaThumbsUp, FaEye, FaShare, FaComments } from "react-icons/fa";
 import "./Dashboard.css"; // Custom CSS for styling
 import logo from "./logo.png";
+import { useNavigate } from "react-router-dom";
 
 ChartJS.register(
   CategoryScale,
@@ -27,7 +28,7 @@ ChartJS.register(
   Legend,
   BarElement,
   ArcElement,
-  RadialLinearScale,
+  RadialLinearScale
 );
 
 function Dashboard() {
@@ -36,59 +37,29 @@ function Dashboard() {
   const [filteredData, setFilteredData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all");
+  const [tableCollapsed, setTableCollapsed] = useState(true);
+  const [maxRows, setMaxRows] = useState(5); // Initially show 5 rows
 
-  const [typewriterText, setTypewriterText] = useState('');
-  const phrases = [
-    'Get Real Time Insights',
-    'Monitor Performance Metrics',
-    'Track Engagement Analytics',
-    'Analyze User Behavior',
-    'Optimize Content Strategy',
-    'Discover Trending Patterns',
-    'Measure Growth Impact',
-    'Identify Key Metrics'
-  ];
-  const [phraseIndex, setPhraseIndex] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    let timer;
-    const currentPhrase = phrases[phraseIndex];
-    
-    if (isDeleting) {
-      timer = setTimeout(() => {
-        setTypewriterText(prev => prev.slice(0, -1));
-        if (typewriterText.length === 1) {
-          setIsDeleting(false);
-          setPhraseIndex((prev) => (prev + 1) % phrases.length);
-        }
-      }, 50);
-    } else {
-      timer = setTimeout(() => {
-        setTypewriterText(currentPhrase.slice(0, typewriterText.length + 1));
-        if (typewriterText.length === currentPhrase.length) {
-          setTimeout(() => setIsDeleting(true), 1500);
-        }
-      }, 100);
-    }
-
-    return () => clearTimeout(timer);
-  }, [typewriterText, isDeleting, phraseIndex, phrases]);
+  const handleNavigateToHome = (sectionId) => {
+    navigate("/", { state: { sectionId } });
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:5000/api/data');
+        const response = await fetch("https://python-server-h4xw.onrender.com/api/data");
         const result = await response.json();
-        
+
         if (result.success) {
           setData(result.data);
           setFilteredData(result.data);
         } else {
-          setError(result.error || 'Failed to fetch data');
+          setError(result.error || "Failed to fetch data");
         }
       } catch (err) {
-        setError('Error connecting to server: ' + err.message);
+        setError("Error connecting to server: " + err.message);
       } finally {
         setLoading(false);
       }
@@ -98,11 +69,14 @@ function Dashboard() {
   }, []);
 
   useEffect(() => {
-    // Filter data based on selected filter
     if (filter === "all") {
       setFilteredData(data);
     } else {
-      setFilteredData(data.filter((item) => item.post_type === filter));
+      setFilteredData(
+        data.filter(
+          (item) => item.post_type.toLowerCase() === filter.toLowerCase()
+        )
+      );
     }
   }, [filter, data]);
 
@@ -111,7 +85,15 @@ function Dashboard() {
   }
 
   if (loading) {
-    return <div className="loading-message">Loading...</div>;
+    return (
+      <div className="loading-screen">
+        <div className="loading-content">
+          <div className="loading-spinner"></div>
+          <h2>Loading Dashboard...</h2>
+          <p>Please wait while we fetch your data</p>
+        </div>
+      </div>
+    );
   }
 
   if (!data.length) {
@@ -127,64 +109,155 @@ function Dashboard() {
     0
   );
 
-  const postTypes = data.reduce((acc, item) => {
+  // Calculate post type distribution
+  const postTypeCount = data.reduce((acc, item) => {
     acc[item.post_type] = (acc[item.post_type] || 0) + 1;
     return acc;
   }, {});
 
-  const themes = data.reduce((acc, item) => {
+  // Calculate theme distribution
+  const themeCount = data.reduce((acc, item) => {
     acc[item.theme] = (acc[item.theme] || 0) + 1;
     return acc;
   }, {});
 
-  // Chart data
+  // Chart data for post distribution
   const barChartData = {
-    labels: ["Image", "Video", "Article"],
+    labels: Object.keys(postTypeCount),
     datasets: [
       {
         label: "Number of Posts",
-        data: [
-          filteredData.filter((item) => item.post_type === "Image").length,
-          filteredData.filter((item) => item.post_type === "Video").length,
-          filteredData.filter((item) => item.post_type === "Article").length,
-        ],
+        data: Object.values(postTypeCount),
         backgroundColor: [
           "rgba(6, 182, 212, 0.7)", // Cyan
           "rgba(59, 130, 246, 0.7)", // Blue
           "rgba(79, 70, 229, 0.7)", // Indigo
+          "rgba(236, 72, 153, 0.7)", // Pink
+          "rgba(34, 197, 94, 0.7)", // Green
         ],
         borderColor: [
           "rgba(6, 182, 212, 1)",
           "rgba(59, 130, 246, 1)",
           "rgba(79, 70, 229, 1)",
+          "rgba(236, 72, 153, 1)",
+          "rgba(34, 197, 94, 1)",
         ],
         borderWidth: 1,
       },
     ],
   };
 
+  
+
+
+  // Chart data for theme distribution
   const pieChartData = {
-    labels: ["Technology", "Education", "Business"],
+    labels: Object.keys(themeCount),
     datasets: [
       {
-        data: [
-          filteredData.filter((item) => item.theme === "Technology").length,
-          filteredData.filter((item) => item.theme === "Education").length,
-          filteredData.filter((item) => item.theme === "Business").length,
-        ],
+        data: Object.values(themeCount),
         backgroundColor: [
-          "rgba(6, 182, 212, 0.7)", // Cyan
+          "rgba(236, 72, 153, 0.7)", // Pink
+          "rgba(168, 85, 247, 0.7)", // Purple
           "rgba(59, 130, 246, 0.7)", // Blue
-          "rgba(79, 70, 229, 0.7)", // Indigo
+          "rgba(34, 197, 94, 0.7)", // Green
+          "rgba(234, 179, 8, 0.7)", // Yellow
         ],
         borderColor: [
-          "rgba(6, 182, 212, 1)",
+          "rgba(236, 72, 153, 1)",
+          "rgba(168, 85, 247, 1)",
           "rgba(59, 130, 246, 1)",
-          "rgba(79, 70, 229, 1)",
+          "rgba(34, 197, 94, 1)",
+          "rgba(234, 179, 8, 1)",
         ],
         borderWidth: 1,
       },
     ],
+  };
+
+  const barOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: "top",
+        labels: {
+          color: "#e0e0e0",
+          font: {
+            size: 11,
+          },
+          padding: 10,
+        },
+      },
+      title: {
+        display: true,
+        text: "Post Type Distribution",
+        color: "#e0e0e0",
+        font: {
+          size: 14,
+          weight: "bold",
+        },
+        padding: {
+          top: 5,
+          bottom: 10,
+        },
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        grid: {
+          color: "rgba(255, 255, 255, 0.1)",
+        },
+        ticks: {
+          color: "#e0e0e0",
+          font: {
+            size: 10,
+          },
+        },
+      },
+      x: {
+        grid: {
+          display: false,
+        },
+        ticks: {
+          color: "#e0e0e0",
+          font: {
+            size: 10,
+          },
+        },
+      },
+    },
+  };
+
+  const pieOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: "bottom",
+        labels: {
+          color: "#e0e0e0",
+          font: {
+            size: 11,
+          },
+          padding: 10,
+        },
+      },
+      title: {
+        display: true,
+        text: "Content Theme Distribution",
+        color: "#e0e0e0",
+        font: {
+          size: 14,
+          weight: "bold",
+        },
+        padding: {
+          top: 5,
+          bottom: 10,
+        },
+      },
+    },
   };
 
   const lineChartData = {
@@ -201,105 +274,128 @@ function Dashboard() {
     ],
   };
 
+  const lineOptions = {
+    responsive: true,
+    animation: {
+      duration: 2000,
+      easing: "easeInOutQuart",
+    },
+    plugins: {
+      legend: {
+        position: "top",
+      },
+      title: {
+        display: true,
+        text: "Likes Trend",
+      },
+    },
+  };
+
   const radarChartData = {
-    labels: ['Likes', 'Views', 'Shares', 'Comments', 'Saves', 'Engagement Rate'],
+    labels: [
+      "Likes",
+      "Views",
+      "Shares",
+      "Comments",
+      "Saves",
+      "Engagement Rate",
+    ],
     datasets: [
       {
-        label: 'Current Period',
+        label: "Current Period",
         data: [65, 85, 45, 55, 70, 75],
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        borderColor: 'rgba(54, 162, 235, 1)',
+        backgroundColor: "rgba(54, 162, 235, 0.2)",
+        borderColor: "rgba(54, 162, 235, 1)",
         borderWidth: 1,
       },
       {
-        label: 'Previous Period',
+        label: "Previous Period",
         data: [55, 75, 35, 45, 60, 65],
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        borderColor: 'rgba(255, 99, 132, 1)',
+        backgroundColor: "rgba(255, 99, 132, 0.2)",
+        borderColor: "rgba(255, 99, 132, 1)",
         borderWidth: 1,
       },
     ],
+  };
+
+  const radarOptions = {
+    responsive: true,
+    animation: {
+      duration: 2000,
+      easing: "easeInOutQuart",
+    },
+    plugins: {
+      legend: {
+        position: "top",
+      },
+      title: {
+        display: true,
+        text: "Engagement Metrics",
+      },
+    },
   };
 
   const heatmapData = {
-    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
     datasets: [
       {
-        label: '00-04',
+        label: "00-04",
         data: [65, 45, 35, 55, 70, 35, 25],
-        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        borderColor: 'rgba(54, 162, 235, 1)',
+        backgroundColor: "rgba(54, 162, 235, 0.2)",
+        borderColor: "rgba(54, 162, 235, 1)",
         borderWidth: 1,
       },
       {
-        label: '04-08',
+        label: "04-08",
         data: [55, 65, 45, 65, 60, 45, 35],
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: "rgba(75, 192, 192, 0.2)",
+        borderColor: "rgba(75, 192, 192, 1)",
         borderWidth: 1,
       },
       {
-        label: '08-12',
+        label: "08-12",
         data: [75, 85, 75, 85, 80, 55, 45],
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        borderColor: 'rgba(255, 99, 132, 1)',
+        backgroundColor: "rgba(255, 99, 132, 0.2)",
+        borderColor: "rgba(255, 99, 132, 1)",
         borderWidth: 1,
       },
       {
-        label: '12-16',
+        label: "12-16",
         data: [85, 95, 85, 95, 90, 75, 65],
-        backgroundColor: 'rgba(255, 206, 86, 0.2)',
-        borderColor: 'rgba(255, 206, 86, 1)',
+        backgroundColor: "rgba(255, 206, 86, 0.2)",
+        borderColor: "rgba(255, 206, 86, 1)",
         borderWidth: 1,
       },
       {
-        label: '16-20',
+        label: "16-20",
         data: [95, 85, 95, 85, 85, 85, 75],
-        backgroundColor: 'rgba(153, 102, 255, 0.2)',
-        borderColor: 'rgba(153, 102, 255, 1)',
+        backgroundColor: "rgba(153, 102, 255, 0.2)",
+        borderColor: "rgba(153, 102, 255, 1)",
         borderWidth: 1,
       },
       {
-        label: '20-24',
+        label: "20-24",
         data: [75, 65, 75, 65, 75, 65, 55],
-        backgroundColor: 'rgba(255, 159, 64, 0.2)',
-        borderColor: 'rgba(255, 159, 64, 1)',
+        backgroundColor: "rgba(255, 159, 64, 0.2)",
+        borderColor: "rgba(255, 159, 64, 1)",
         borderWidth: 1,
       },
     ],
   };
 
-  const chartOptions = {
-    maintainAspectRatio: false,
+  const heatmapOptions = {
     responsive: true,
+    animation: {
+      duration: 2000,
+      easing: "easeInOutQuart",
+    },
     plugins: {
       legend: {
-        position: "bottom",
-        labels: {
-          color: "#e0e0e0",
-          font: {
-            size: 12,
-          },
-          padding: 20,
-        },
+        position: "top",
       },
-    },
-    scales: {
-      x: {
-        grid: {
-          color: "rgba(255, 255, 255, 0.05)",
-        },
-        ticks: {
-          color: "#e0e0e0",
-        },
-      },
-      y: {
-        grid: {
-          color: "rgba(255, 255, 255, 0.05)",
-        },
-        ticks: {
-          color: "#e0e0e0",
-        },
+      title: {
+        display: true,
+        text: "Activity Heatmap",
       },
     },
   };
@@ -308,7 +404,13 @@ function Dashboard() {
     <div className="dashboard-container">
       <header className="dashboard-navbar">
         <div className="dashboard-navbar-left">
-          <img src={logo} alt="Logo" className="dashboard-navbar-logo-img" />
+          <img
+                  src={logo}
+                  alt="Logo"
+                  className="dashboard-navbar-logo-img"
+                  onClick={() => handleNavigateToHome("home-section")}
+                  style={{ cursor: "pointer" }}
+                />
         </div>
         <nav className="dashboard-navbar-links">
           <a href="/">Home</a>
@@ -348,17 +450,25 @@ function Dashboard() {
 
         {/* Filter and Table Section */}
         <div className="filter-table-section">
+            <h4 style={{paddingBottom:"5px"}}>Filter by Post Type: </h4>
           <div className="filter">
-            <label htmlFor="post-type">Filter by Post Type: </label>
             <select
               id="post-type"
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
             >
               <option value="all">All</option>
-              <option value="Image">Image</option>
-              <option value="Video">Video</option>
-              <option value="Article">Article</option>
+              <option value="static_image">Image</option>
+              <option value="carousel">Carousel</option>
+              <option value="reels">Reels</option>
+              <option value="live_video">Video</option>
+              <option value="text">Text</option>
+              <option value="meme">Meme</option>
+              <option value="giveaway">Giveaway</option>
+              <option value="poll">Poll</option>
+              <option value="story">Story</option>
+              <option value="event_promotion">Event Promotion</option>
+              <option value="infographic">Infographic</option>
             </select>
           </div>
           <div className="data-table-container">
@@ -375,134 +485,156 @@ function Dashboard() {
                 </tr>
               </thead>
               <tbody>
-                {filteredData.map((item) => (
-                  <tr key={item.post_id}>
-                    <td>{item.post_id}</td>
-                    <td>{item.post_type}</td>
-                    <td>{item.theme}</td>
-                    <td>{item.views}</td>
-                    <td>{item.likes}</td>
-                    <td>{Object.keys(item.comments).length}</td>
-                    <td>{item.shares}</td>
-                  </tr>
-                ))}
+                {filteredData
+                  .slice(0, tableCollapsed ? maxRows : filteredData.length)
+                  .map((item) => (
+                    <tr key={item.post_id}>
+                      <td>{item.post_id}</td>
+                      <td>{item.post_type}</td>
+                      <td>{item.theme}</td>
+                      <td>{item.views}</td>
+                      <td>{item.likes}</td>
+                      <td>{Object.keys(item.comments).length}</td>
+                      <td>{item.shares}</td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>
+          <button
+              className="show-more-button"
+              onClick={() => setTableCollapsed(!tableCollapsed)}
+            >
+              {tableCollapsed ? "Show More" : "Show Less"}
+            </button>
         </div>
 
         {/* Charts Section */}
-        <div className="charts">
-          <div className="chart-container">
-            <div
-              className="chart chart-small"
-              style={{
-                height: "380px",
-                width: "45%",
-                position: "relative",
-                marginLeft: "auto",
-                marginRight: "auto"
-              }}
-            >
-              <h3>Post Type Distribution</h3>
-              <Bar data={barChartData} options={chartOptions} />
-            </div>
-            <div
-              className="chart chart-small"
-              style={{
-                height: "380px",
-                width: "45%",
-                position: "relative",
-                marginLeft: "auto",
-                marginRight: "auto"
-              }}
-            >
-              <h3>Theme Distribution</h3>
-              <Pie data={pieChartData} options={chartOptions} />
-            </div>
-          </div>
-
-          {/* Typewriter Effect */}
-          <div className="typewriter-container">
-            <div className="typewriter">
-              {typewriterText}
-            </div>
-          </div>
-          
-          <div className="chart-container">
-            <div
-              className="chart chart-small"
-              style={{
-                height: "380px",
-                width: "45%",
-                position: "relative",
-                marginLeft: "auto",
-                marginRight: "auto"
-              }}
-            >
-              <h3>Engagement Metrics</h3>
-              <Radar 
-                data={radarChartData} 
-                options={{
-                  ...chartOptions,
-                  scales: {
-                    r: {
-                      ticks: { color: '#e0e0e0' },
-                      grid: { color: 'rgba(255, 255, 255, 0.1)' },
-                      angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
-                      pointLabels: { color: '#e0e0e0' }
-                    }
-                  }
-                }} 
-              />
-            </div>
-            <div
-              className="chart chart-small"
-              style={{
-                height: "380px",
-                width: "45%",
-                position: "relative",
-                marginLeft: "auto",
-                marginRight: "auto"
-              }}
-            >
-              <h3>Activity Heatmap</h3>
-              <Bar 
-                data={heatmapData} 
-                options={{
-                  ...chartOptions,
-                  scales: {
-                    x: {
-                      stacked: true,
-                      grid: { color: 'rgba(255, 255, 255, 0.05)' },
-                      ticks: { color: '#e0e0e0' }
-                    },
-                    y: {
-                      stacked: true,
-                      grid: { color: 'rgba(255, 255, 255, 0.05)' },
-                      ticks: { color: '#e0e0e0' }
-                    }
-                  }
-                }} 
-              />
-            </div>
-          </div>
-
+        {/* Charts Section */}
+        <div
+          className="charts-container"
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "20px",
+            justifyContent: "space-around",
+            marginTop: "20px",
+          }}
+        >
+          {/* Post Distribution Chart */}
           <div
-            className="chart chart-large"
             style={{
               height: "380px",
-              width: "85%",
+              width: "45%",
               position: "relative",
-              marginLeft: "auto",
-              marginRight: "auto"
+              background: "rgba(17, 25, 40, 0.75)",
+              backdropFilter: "blur(12px)",
+              padding: "25px",
+              borderRadius: "12px",
+              border: "2px solid rgba(255, 255, 255, 0.9)",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
-            <h3>Likes Over Time</h3>
-            <Line data={lineChartData} options={chartOptions} />
+            <h3 style={{ marginBottom: "15px" }}>Post Type Distribution</h3>
+            <Bar data={barChartData} options={barOptions} />
+          </div>
+
+          {/* Theme Distribution Chart */}
+          <div
+            style={{
+              height: "380px",
+              width: "45%",
+              position: "relative",
+              background: "rgba(17, 25, 40, 0.75)",
+              backdropFilter: "blur(12px)",
+              padding: "25px",
+              borderRadius: "12px",
+              border: "2px solid rgba(255, 255, 255, 0.9)",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <h3 style={{ marginBottom: "15px" }}>Content Theme Distribution</h3>
+            <Pie data={pieChartData} options={pieOptions} />
           </div>
         </div>
 
+        <div className="chart-container" style={{ marginTop: "20px" }}>
+          <div
+            style={{
+              height: "380px",
+              width: "100%",
+              position: "relative",
+              marginLeft: "auto",
+              marginRight: "auto",
+              background: "rgba(17, 25, 40, 0.75)",
+              backdropFilter: "blur(12px)",
+              padding: "25px",
+              borderRadius: "12px",
+              border: "2px solid rgba(255, 255, 255, 0.9)",
+              marginBottom: "20px",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              overflow: "hidden",
+            }}
+          >
+            <h3 style={{ marginBottom: "15px" }}>Engagement Metrics</h3>
+            <Radar data={radarChartData} options={radarOptions} />
+          </div>
+          <div
+            className="chart chart-small"
+            style={{
+              height: "380px",
+              width: "25%",
+              position: "relative",
+              marginLeft: "auto",
+              marginRight: "auto",
+              backdropFilter: "blur(12px)",
+              padding: "25px",
+              borderRadius: "12px",
+              border: "2px solid rgba(255, 255, 255, 0.9)",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              overflow: "auto",
+            }}
+          >
+            <h3 style={{ marginBottom: "15px" }}>Activity Heatmap</h3>
+            <Bar data={heatmapData} options={heatmapOptions} />
+          </div>
+        </div>
+
+        <div
+          style={{
+            height: "380px",
+            width: "80%",
+            position: "relative",
+            marginLeft: "auto",
+            marginRight: "auto",
+            marginTop: "25px",
+            background: "rgba(17, 25, 40, 0.75)",
+            backdropFilter: "blur(12px)",
+            padding: "20px 25px",
+            borderRadius: "12px",
+            border: "2px solid rgba(255, 255, 255, 0.9)",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            overflow: "auto",
+          }}
+        >
+          <h3 style={{ marginBottom: "15px" }}>Likes Over Time</h3>
+          <Line data={lineChartData} options={lineOptions} />
+        </div>
       </div>
     </div>
   );

@@ -63,7 +63,7 @@
 }
 
 .chat-navbar-links a:hover {
-    
+    cursor: pointer;
     /* Neon pink hover effect */
     text-shadow: 0 0 8px grey;
 }

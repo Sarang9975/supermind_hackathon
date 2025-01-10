@@ -28,6 +28,12 @@ function Homepage() {
     navigate("/chat");
   };
 
+
+  const handleNavigateToDashboard = () => {
+    navigate("/dashboard");
+  };
+
+
   const scrollToSection = (sectionId) => {
     const section = document.getElementById(sectionId);
     if (section) {
@@ -69,6 +75,8 @@ function Homepage() {
           <a href="#" onClick={() => scrollToSection("home-section")}>Home</a>
           <a href="#" onClick={() => scrollToSection("about-section")}>About</a>
           <a href="#" onClick={handleNavigateToChat}>Analyse</a>
+          
+          <a href="#" onClick={handleNavigateToDashboard}>Dashboard</a>
           <a href="#" onClick={() => scrollToSection("contact-section")}>Contact Us</a>
         </nav>
       </header>
@@ -84,9 +92,13 @@ function Homepage() {
             <button onClick={handleNavigateToChat} className="start-button">
               Start Analysis
             </button>
-            <button onClick={() => navigate("/demo")} className="view-demo-button">
-              View Demo
-            </button>
+            <button
+  onClick={() => window.open("https://www.youtube.com/watch?v=chMlrLQhqIY", "_blank")}
+  className="view-demo-button"
+>
+  View Demo
+</button>
+
           </div>
         </div>
 

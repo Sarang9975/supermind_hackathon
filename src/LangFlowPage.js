@@ -331,20 +331,27 @@ function LangFlowPage() {
   };
   return (
     <>
-      <header className="chat-navbar">
-        <div className="chat-navbar-left">
-          <img src={logo} alt="Logo" className="chat-navbar-logo-img" />
-        </div>
-        <nav className="chat-navbar-links">
-          <a onClick={() => handleNavigateToHome("home-section")}>Home</a>
-          <a onClick={() => handleNavigateToHome("about-section")}>About</a>
-          <a href="/chat">Analyse</a>
-          <a href="/dashboard">Dashboard</a>
-          <a onClick={() => handleNavigateToHome("contact-section")}>
-            Contact Us
-          </a>
-        </nav>
-      </header>
+    
+  <header className="chat-navbar">
+    <div className="chat-navbar-left">
+      <img
+        src={logo}
+        alt="Logo"
+        className="chat-navbar-logo-img"
+        onClick={() => handleNavigateToHome("home-section")}
+        style={{ cursor: "pointer" }}
+      />
+    </div>
+    <nav className="chat-navbar-links">
+      <a onClick={() => handleNavigateToHome("home-section")}>Home</a>
+      <a onClick={() => handleNavigateToHome("about-section")}>About</a>
+      <a href="/chat">Analyse</a>
+      <a href="/dashboard">Dashboard</a>
+      <a onClick={() => handleNavigateToHome("contact-section")}>Contact Us</a>
+    </nav>
+  </header>
+
+
 
       <div className="chatpage-main-container">
         {showTips && (
@@ -542,6 +549,7 @@ function LangFlowPage() {
         </div>
       </div>
     </>
+  
   );
 }
 

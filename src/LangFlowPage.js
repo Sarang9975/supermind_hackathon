@@ -120,7 +120,7 @@ function LangFlowPage() {
       console.error("Error:", error);
       setChatHistory((prev) => [
         ...prev,
-        { type: "bot", text: "Error: Failed to get response from the server." },
+        { type: "bot", text: "Please Retry Again" },
       ]);
     } finally {
       setLoading(false);

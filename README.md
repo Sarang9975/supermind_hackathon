@@ -31,9 +31,8 @@ Follow the steps below to run SploreAI locally:
 Follow these steps to run SploreAI locally:
 
 1️⃣ Clone the Repository
-git clone https://github.com/Sarang9975/supermind_hackathon.git  
-cd supermind_hackathon  
-cd langflow_client
+git clone https://github.com/Sarang9975/supermind_hackathon.git   
+cd langflow-client
 
 2️⃣ Install Dependencies
 npm install  

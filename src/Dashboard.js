@@ -43,8 +43,16 @@ function Dashboard() {
   const navigate = useNavigate();
 
   const handleNavigateToHome = (sectionId) => {
-    navigate("/", { state: { sectionId } });
+    if (window.location.pathname === "/") {
+      const targetElement = document.getElementById(sectionId);
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      navigate("/", { state: { sectionId } });
+    }
   };
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -335,6 +343,9 @@ function Dashboard() {
     },
   };
 
+  
+
+
   const heatmapData = {
     labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
     datasets: [
@@ -414,10 +425,28 @@ function Dashboard() {
         </div>
         <nav className="dashboard-navbar-links">
           <a href="/">Home</a>
-          <a href="/">About</a>
+          <a
+  href="#about-section"
+  onClick={(e) => {
+    e.preventDefault();
+    handleNavigateToHome("about-section");
+  }}
+>
+  About
+</a>
           <a href="/chat">Analyse</a>
           <a href="/dashboard">Dashboard</a>
-          <a href="/">Contact Us</a>
+          <a
+  href="#contact-section"
+  onClick={(e) => {
+    e.preventDefault();
+    handleNavigateToHome("contact-section");
+  }}
+>
+  Contact Us
+</a>
+
+
         </nav>
       </header>
       <div className="dashboard-main-container">

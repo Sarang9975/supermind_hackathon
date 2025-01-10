@@ -1,11 +1,13 @@
 .dashboard-container {
   min-height: 100vh;
-  width: calc(100% - 40px); /* Accounts for padding */
+  width: 100%;
+padding: 0 40px;
+
   max-width: 100%; /* Prevents exceeding viewport */
   display: flex;
   flex-direction: column;
   background-color: #121212;
-  padding: 0 70px; /* Add padding for left and right gaps */
+  padding: 0 100px; /* Add padding for left and right gaps */
   padding-top: 100px;
   box-sizing: border-box; /* Ensure padding is included in width calculation */
 }

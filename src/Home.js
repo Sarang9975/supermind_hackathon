@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate , useLocation} from "react-router-dom";
 import emailjs from "emailjs-com";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -16,8 +16,18 @@ import linkedin from "./linkedin.png";
 
 function Homepage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  useEffect(() => {
+    if (location.state?.sectionId) {
+      const section = document.getElementById(location.state.sectionId);
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [location]);
 
   useEffect(() => {
     // Initialize AOS for animations
@@ -33,7 +43,19 @@ function Homepage() {
     navigate("/dashboard");
   };
 
+  const handleNavigateToHome = (sectionId) => {
+    if (window.location.pathname === "/") {
+      const targetElement = document.getElementById(sectionId);
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      navigate("/", { state: { sectionId } });
+    }
+  };
 
+  
+  
   const scrollToSection = (sectionId) => {
     const section = document.getElementById(sectionId);
     if (section) {
@@ -65,6 +87,8 @@ function Homepage() {
       });
   };
 
+
+
   return (
     <div className="homepage-container">
       <header className="navbar">
@@ -73,11 +97,29 @@ function Homepage() {
         </div>
         <nav className="navbar-links">
           <a href="#" onClick={() => scrollToSection("home-section")}>Home</a>
-          <a href="#" onClick={() => scrollToSection("about-section")}>About</a>
+          <a href="#" onClick={handleNavigateToDashboard}>Dashboard</a>
+          <a
+  href="#about-section"
+  onClick={(e) => {
+    e.preventDefault();
+    handleNavigateToHome("about-section");
+  }}
+>
+  About
+</a>
           <a href="#" onClick={handleNavigateToChat}>Analyse</a>
           
-          <a href="#" onClick={handleNavigateToDashboard}>Dashboard</a>
-          <a href="#" onClick={() => scrollToSection("contact-section")}>Contact Us</a>
+       
+<a
+  href="#contact-section"
+  onClick={(e) => {
+    e.preventDefault();
+    handleNavigateToHome("contact-section");
+  }}
+>
+  Contact Us
+</a>
+
         </nav>
       </header>
 

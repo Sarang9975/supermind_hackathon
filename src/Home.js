@@ -9,7 +9,7 @@ import bgimg from "./file.png";
 import personImage1 from "./15.jpg";
 import personImage2 from "./16.jpg";
 import personImage3 from "./17.jpg";
-import personImage4 from "./18.jpg"; // Add photo for Mathew Binoy
+import personImage4 from "./18.jpeg"; // Add photo for Mathew Binoy
 import tool from "./tool.png";
 import mgglass from "./magnifying-glass.png.png";
 import linkedin from "./linkedin.png";

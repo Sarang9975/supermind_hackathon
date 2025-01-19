@@ -135,7 +135,7 @@ function Homepage() {
               Start Analysis
             </button>
             <button
-  onClick={() => window.open("https://www.youtube.com/watch?v=chMlrLQhqIY", "_blank")}
+  onClick={() => window.open("https://www.youtube.com/watch?v=rSjIfCAKO4c", "_blank")}
   className="view-demo-button"
 >
   View Demo
